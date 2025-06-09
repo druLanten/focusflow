@@ -32,8 +32,8 @@ const ProgressOverview = () => {
   const completionRate = safeTasks.length > 0 ? (completedTasks.length / safeTasks.length) * 100 : 0;
 
   // Calculate Pomodoro efficiency (for future use)
-  const totalEstimatedPomodoros = safeTasks.reduce((sum, task) => sum + (task?.pomodorosEstimated || 0), 0);
-  const totalCompletedPomodoros = safeTasks.reduce((sum, task) => sum + (task?.pomodorosCompleted || 0), 0);
+  // const totalEstimatedPomodoros = safeTasks.reduce((sum, task) => sum + (task?.pomodorosEstimated || 0), 0);
+  // const totalCompletedPomodoros = safeTasks.reduce((sum, task) => sum + (task?.pomodorosCompleted || 0), 0);
   // const pomodoroEfficiency = totalEstimatedPomodoros > 0 ? (totalCompletedPomodoros / totalEstimatedPomodoros) * 100 : 0;
 
   // Weekly goals

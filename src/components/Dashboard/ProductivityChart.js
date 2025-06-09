@@ -54,7 +54,7 @@ const ProductivityChart = () => {
   const chartData = useMemo(() => {
     console.log('📊 Recalculating chart data for:', selectedMetric, currentPeriod);
     return getChartData(currentPeriod, selectedMetric);
-  }, [getChartData, currentPeriod, selectedMetric, statsState, dailyStats, allTasks]);
+  }, [getChartData, currentPeriod, selectedMetric]);
 
   // Force chart re-render when data changes
   useEffect(() => {

@@ -10,7 +10,7 @@ import ProgressOverview from './ProgressOverview';
 const Dashboard = () => {
   const { dailyStats } = useTimer();
   const { stats: taskStats } = useTasks();
-  const { insights, getTodayStats } = useStatistics();
+  const { insights } = useStatistics();
 
   // const todayStats = getTodayStats(); // For future use
 

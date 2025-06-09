@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect, useCallback } from 'react';
 import { statsAPI } from '../services/api';
 import { useAuth } from './AuthContext';
 import { useTasks } from './TaskContext';
@@ -223,7 +223,7 @@ const calculateInsights = (historicalData) => {
 // Statistics Provider Component
 export const StatisticsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(statisticsReducer, initialState);
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated } = useAuth();
   const { allTasks } = useTasks();
 
   // Load and sync data when authentication changes
@@ -234,7 +234,7 @@ export const StatisticsProvider = ({ children }) => {
           dispatch({ type: ACTIONS.SET_LOADING, payload: true });
 
           // Get backend statistics
-          const [overviewData, dailyData] = await Promise.all([
+          const [, dailyData] = await Promise.all([
             statsAPI.getOverview(),
             statsAPI.getDailyStats()
           ]);
@@ -289,7 +289,7 @@ export const StatisticsProvider = ({ children }) => {
         addOrUpdateDailyRecord(today, { tasksCompleted: completedTasksToday });
       }
     }
-  }, [allTasks]);
+  }, [allTasks, addOrUpdateDailyRecord]);
 
   // Recalculate insights whenever historical data changes
   useEffect(() => {
@@ -298,7 +298,7 @@ export const StatisticsProvider = ({ children }) => {
   }, [state.historicalData]);
 
   // Action creators
-  const addOrUpdateDailyRecord = (date, data) => {
+  const addOrUpdateDailyRecord = useCallback((date, data) => {
     const dateString = typeof date === 'string' ? date : formatDate(date);
     const existingRecord = state.historicalData.find(record => record.date === dateString);
 
@@ -313,7 +313,7 @@ export const StatisticsProvider = ({ children }) => {
         payload: { date: dateString, ...data }
       });
     }
-  };
+  }, [state.historicalData]);
 
   const setCurrentPeriod = (period) => {
     dispatch({ type: ACTIONS.SET_CURRENT_PERIOD, payload: period });
