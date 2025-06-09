@@ -275,6 +275,24 @@ export const StatisticsProvider = ({ children }) => {
     }
   }, [state.historicalData]);
 
+  // Action creators
+  const addOrUpdateDailyRecord = useCallback((date, data) => {
+    const dateString = typeof date === 'string' ? date : formatDate(date);
+    const existingRecord = state.historicalData.find(record => record.date === dateString);
+
+    if (existingRecord) {
+      dispatch({
+        type: ACTIONS.UPDATE_DAILY_RECORD,
+        payload: { date: dateString, data }
+      });
+    } else {
+      dispatch({
+        type: ACTIONS.ADD_DAILY_RECORD,
+        payload: { date: dateString, ...data }
+      });
+    }
+  }, [state.historicalData]);
+
   // Update task completion data when tasks change
   useEffect(() => {
     if (allTasks && allTasks.length > 0) {
@@ -295,24 +313,6 @@ export const StatisticsProvider = ({ children }) => {
   useEffect(() => {
     const insights = calculateInsights(state.historicalData);
     dispatch({ type: ACTIONS.CALCULATE_INSIGHTS, payload: insights });
-  }, [state.historicalData]);
-
-  // Action creators
-  const addOrUpdateDailyRecord = useCallback((date, data) => {
-    const dateString = typeof date === 'string' ? date : formatDate(date);
-    const existingRecord = state.historicalData.find(record => record.date === dateString);
-
-    if (existingRecord) {
-      dispatch({
-        type: ACTIONS.UPDATE_DAILY_RECORD,
-        payload: { date: dateString, data }
-      });
-    } else {
-      dispatch({
-        type: ACTIONS.ADD_DAILY_RECORD,
-        payload: { date: dateString, ...data }
-      });
-    }
   }, [state.historicalData]);
 
   const setCurrentPeriod = (period) => {

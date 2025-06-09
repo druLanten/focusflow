@@ -13,8 +13,6 @@ import {
 } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
 import { useStatistics } from '../../contexts/StatisticsContext';
-import { useTimer } from '../../contexts/TimerContext';
-import { useTasks } from '../../contexts/TaskContext';
 
 // Register Chart.js components
 ChartJS.register(
@@ -30,9 +28,7 @@ ChartJS.register(
 );
 
 const ProductivityChart = () => {
-  const { getChartData, currentPeriod, setCurrentPeriod, TIME_PERIODS, state: statsState } = useStatistics();
-  const { dailyStats } = useTimer();
-  const { allTasks } = useTasks();
+  const { getChartData, currentPeriod, setCurrentPeriod, TIME_PERIODS } = useStatistics();
   const [selectedMetric, setSelectedMetric] = useState('pomodorosCompleted');
   const [chartType, setChartType] = useState('line');
   const [chartKey, setChartKey] = useState(0);
